@@ -191,10 +191,12 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void btnCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCActionPerformed
         // TODO add your handling code here:
+        checkAnswer("C");
     }//GEN-LAST:event_btnCActionPerformed
 
     private void btnDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDActionPerformed
         // TODO add your handling code here:
+        checkAnswer("D");
     }//GEN-LAST:event_btnDActionPerformed
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
@@ -215,10 +217,12 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void btnAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAActionPerformed
         // TODO add your handling code here:
+        checkAnswer("A");
     }//GEN-LAST:event_btnAActionPerformed
 
     private void btnBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBActionPerformed
         // TODO add your handling code here:
+        checkAnswer("B");
     }//GEN-LAST:event_btnBActionPerformed
 
     /**
