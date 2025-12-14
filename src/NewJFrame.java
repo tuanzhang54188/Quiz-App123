@@ -249,6 +249,22 @@ public class NewJFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new NewJFrame().setVisible(true));
     }
+    
+    
+    abstract class Question {
+        String raw;
+        String question, A, B, C, D, answer;
+
+        public Question(String line) {
+            this.raw = line;
+            String[] p = line.split("\\|");
+            question = p[0];
+            A = p[1];
+            B = p[2];
+            C = p[3];
+            D = p[4];
+            answer = p[5];
+        }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnA;
