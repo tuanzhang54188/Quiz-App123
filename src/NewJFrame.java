@@ -294,6 +294,28 @@ public class NewJFrame extends javax.swing.JFrame {
         }
     }      
 
+      
+      // Subclass representing a special type of question: an ethical dilemma.
+      // This class doesn’t change the logic of Question, but it customize how the question is displayed to make the category more obvious.
+    class EthicalQuestion extends Question {
+
+    /**
+     * Simply calls the parent class constructor.
+     * The parsing behavior remains the same.
+     */
+    public EthicalQuestion(String line) {
+        super(line);
+    }
+
+    /**
+     * Overrides the default show() so ethical questions include a tag.
+     * The method still uses the parent’s formatting so we avoid duplicate code.
+     */
+    @Override
+    public String show() {
+        return "[Ethical Dilemma]\n" + super.show();
+    }
+}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnA;
     private javax.swing.JButton btnB;
