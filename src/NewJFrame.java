@@ -12,7 +12,7 @@ import java.util.*;
 import javax.swing.*;
 public class NewJFrame extends javax.swing.JFrame {
       // Constants
-    private static final String QUESTION_FILE = "questions.txt";
+    private static final String QUESTION_FILE = "question.txt";
     private static final String WRONG_FILE = "wrong.txt";
     // Logger 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(NewJFrame.class.getName());
