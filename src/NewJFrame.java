@@ -250,21 +250,49 @@ public class NewJFrame extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> new NewJFrame().setVisible(true));
     }
     
-    
-    abstract class Question {
-        String raw;
-        String question, A, B, C, D, answer;
+// The base class that represents a generic multiple‑choice question.
+// It is declared abstract because we expect specific types of questions to extend it.
+      abstract class Question {
+        String raw; // The full original line from the file
+        String question, A, B, C, D, answer; // Parsed question text and options
 
+        
+     /**
+     * Constructor: receives a raw line from the text file and
+     * splits it into its components. Each question must follow
+     * the format: Question|A|B|C|D|CorrectAnswer
+     */
         public Question(String line) {
             this.raw = line;
-            String[] p = line.split("\\|");
+            String[] p = line.split("\\|"); // Split the line into individual parts
             question = p[0];
             A = p[1];
             B = p[2];
             C = p[3];
             D = p[4];
-            answer = p[5];
+            answer = p[5]; // Correct choice 
         }
+
+       /**
+        * Displays the question in a readable, nicely formatted way.
+        * Subclasses are allowed to override this method to add their
+        * own extra labels or formatting.
+        */
+        public String show() {
+            return question + "\n\nA. " + A + "\nB. " + B + "\nC. " + C + "\nD. " + D;
+        }
+
+        
+        
+       /**
+        * Checks if the user's selected option matches the correct answer.
+        * This keeps the comparison simple and clean.
+        */
+        
+        public boolean isCorrect(String c) {
+            return c.equals(answer);
+        }
+    }      
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnA;
