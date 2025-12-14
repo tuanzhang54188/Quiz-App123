@@ -7,17 +7,58 @@
  *
  * @author yesho
  */
+import java.io.*;
+import java.util.*;
+import javax.swing.*;
 public class NewJFrame extends javax.swing.JFrame {
-    
+      // Constants
+    private static final String QUESTION_FILE = "questions.txt";
+    private static final String WRONG_FILE = "wrong.txt";
+    // Logger 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(NewJFrame.class.getName());
-
+    // Instance variables
+    private ArrayList<Question> questionList = new ArrayList<>();// all questions
+    private ArrayList<Question> wrongList = new ArrayList<>();// wrong questions
+    private int currentIndex = 0;// current question index
+    private boolean reviewingWrong = false; // review mode toggle
+    // Grade statistics
+     private int correctCount = 0; // number of correct answers
+    private int wrongCount = 0; // number of wrong answers
     /**
      * Creates new form NewJFrame
      */
     public NewJFrame() {
-        initComponents();
+        initComponents();// load UI components
+        loadQuestions(); // read questions from file
+        loadWrong();// read wrong questions from file
+        txtDisplay.setText("Click START to begin");// initial screen message
     }
-
+    // Method overloading
+    public NewJFrame(String title) {
+        this();// call default constructor
+        setTitle(title);// set window title
+    }
+    // Static method example
+      public static void log(String msg) {
+        logger.info(msg);// print message to log
+    }
+     // Read all questions from the question file 
+      private void loadQuestions() {
+        try (BufferedReader br = new BufferedReader(new FileReader(QUESTION_FILE))) {
+            String line;// each line represents one question
+             // Read file line by line until no more lines exist
+            while ((line = br.readLine()) != null) {
+                // Create a new EthicalQuestion object and add to question list
+            // (polymorphism: EthicalQuestion extends Question)
+                questionList.add(new EthicalQuestion(line));
+            }
+             // Log how many questions were successfully loaded
+            log("Loaded questions: " + questionList.size());
+        } catch (Exception e) {
+             // If file can't be found or read, show message on screen
+            txtDisplay.setText("Cannot find " + QUESTION_FILE);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
