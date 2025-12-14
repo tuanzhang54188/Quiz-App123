@@ -59,6 +59,88 @@ public class NewJFrame extends javax.swing.JFrame {
             txtDisplay.setText("Cannot find " + QUESTION_FILE);
         }
     }
+/**
+ * Loads wrong questions from wrong.txt into wrongList.
+ */
+      private void loadWrong(){
+        try (BufferedReader br=new BufferedReader(new FileReader(WRONG_FILE))){
+            String line;
+            //Read each line of the file (each line is one question)
+            while((line = br.readLine())!=null){
+                //Create a Question object (polymorphism: EthicalQuestion extends Question)
+                wrongList.add(new EthicalQuestion(line));                
+            }
+        }catch (Exception e){
+            //If file does not exist, simply log the message
+            log("No wrong.txt found." );
+        }
+    }   
+    /**
+     * Saves all wrong questions from wrongList into wrong.txt.
+     */
+    private void saveWrong(){
+        try (FileWriter fw = new FileWriter(WRONG_FILE)){
+            //Write each wrong question line into the file
+            for(Question q :wrongList) fw.write(q.raw+ "\n");
+        }catch(Exception e){
+            //log if saving fails
+            log("Error saving wrong.txt");           
+        }
+    }
+    /**
+     * Shows the current question or completion message on screen.
+     * @return 
+     */
+    private void displayQuestion() {
+        // Choose which list to display: normal questions or wrong-question review mode
+        ArrayList<Question> list = reviewingWrong ? wrongList : questionList;        
+        // If the list is empty, show no-questions message
+        if (list.isEmpty()) {
+            txtDisplay.setText("No questions available.");
+            return;
+        }
+        // If index exceeds number of questions, show completion message
+        if (currentIndex >= list.size()) {
+            txtDisplay.setText("All questions completed!");
+            return;
+        }
+        // Get the current question object (polymorphism in action)
+        Question q = list.get(currentIndex);
+        // Display the question content inside the text area
+        txtDisplay.setText(q.show());
+         // Display the question number
+        lblQuestionNumber.setText("Q" + (currentIndex + 1));
+    }
+    /**
+     * Checks the user's answer and updates score and wrongList.
+     * @param userChoice The answer selected by the user (A-D).
+     */
+    private void checkAnswer(String userChoice) {
+        // Choose the proper source list depending on review mode
+        ArrayList<Question> list = reviewingWrong ? wrongList : questionList;
+        // If no more questions to check, exit
+        if (currentIndex >= list.size()) return;
+        // Get the current question to evaluate the user’s answer
+        Question q = list.get(currentIndex);
+        // Determine whether answer is correct
+        boolean isCorrect = q.isCorrect(userChoice);
+
+        
+        String result = isCorrect ? "Correct!" : "Wrong!";
+        txtDisplay.setText(result + "\n\n" + q.show());
+
+        // Only track score in normal mode (not in review-wrong mode)
+        if (!reviewingWrong) {
+            if (isCorrect) correctCount++;
+            else {
+                wrongCount++;
+                wrongList.add(q);
+                saveWrong();
+            }
+        }
+        // Move to next question
+        currentIndex++;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -241,28 +323,37 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDActionPerformed
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
-        // TODO add your handling code here:
+        reviewingWrong = false;   // start normal mode, not reviewing wrong questions
+        currentIndex = 0;         // go to first question
+        correctCount = 0;         // reset score
+        wrongCount = 0;           // reset wrong counter
+        displayQuestion();        // show first question
     }//GEN-LAST:event_btnStartActionPerformed
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
-        // TODO add your handling code here:
+        displayQuestion();
     }//GEN-LAST:event_btnNextActionPerformed
 
     private void btnReviewWrongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReviewWrongActionPerformed
-        // TODO add your handling code here:
+        reviewingWrong = true;  // switch to wrong-question review mode
+        currentIndex = 0;       // restart from the beginning of wrongList
+        displayQuestion();
     }//GEN-LAST:event_btnReviewWrongActionPerformed
 
     private void btnFinishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinishActionPerformed
-        // TODO add your handling code here:
+        txtDisplay.setText(
+            "Finished!\n\n" +
+            "Correct: " + correctCount + "\n" +     // show how many answers were correct
+            "Wrong: " + wrongCount + "\n" +         // show how many were wrong
+            "Total: " + (correctCount + wrongCount) // show total questions attempted
+        );
     }//GEN-LAST:event_btnFinishActionPerformed
 
     private void btnAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAActionPerformed
-        // TODO add your handling code here:
         checkAnswer("A");
     }//GEN-LAST:event_btnAActionPerformed
 
     private void btnBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBActionPerformed
-        // TODO add your handling code here:
         checkAnswer("B");
     }//GEN-LAST:event_btnBActionPerformed
 
