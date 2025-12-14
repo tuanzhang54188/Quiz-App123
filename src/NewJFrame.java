@@ -331,6 +331,7 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnStartActionPerformed
 
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
+        currentIndex++;
         displayQuestion();
     }//GEN-LAST:event_btnNextActionPerformed
 
